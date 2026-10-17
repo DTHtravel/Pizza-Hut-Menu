@@ -129,11 +129,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   overflow:hidden;
 }
 .hero-art{
-  width:min(58vw,220px);margin:0 auto 18px;
-  filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));
+  position:relative;width:min(60vw,236px);aspect-ratio:1;margin:0 auto 20px;
+  border-radius:50%;overflow:hidden;
+  box-shadow:0 22px 46px rgba(0,0,0,.6), 0 0 0 6px rgba(255,255,255,.07);
+  animation:float 7s ease-in-out infinite;
 }
-.hero-art svg{animation:spin 48s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+.hero-art svg{position:absolute;inset:0;width:100%;height:100%}
+.hero-art img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(14px);transform:scale(1.08);opacity:0;
+  transition:filter .6s var(--ease),opacity .45s linear,transform .6s var(--ease);
+}
+.hero-art img.ready{filter:none;transform:none;opacity:1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 
 .hero h1{
   font-family:var(--display);font-size:clamp(30px,10vw,46px);line-height:.92;
@@ -153,6 +161,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   border:1px solid var(--line);border-radius:var(--radius-lg);
   padding:16px 16px 18px;
 }
+.crust-pic{
+  position:relative;height:116px;margin:-16px -16px 14px;
+  border-radius:21px 21px 0 0;overflow:hidden;background:#3C0200;
+}
+.crust-pic img{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(12px);transform:scale(1.06);opacity:0;
+  transition:filter .5s var(--ease),opacity .4s linear,transform .5s var(--ease);
+}
+.crust-pic img.ready{filter:none;transform:none;opacity:1}
 .crust h2{font-family:var(--display);font-size:17px;margin:0 0 6px;letter-spacing:-.3px}
 .crust p{margin:0;font-size:13.5px;color:var(--ink-soft);text-align:left;line-height:1.45}
 .crust .rule{
@@ -210,7 +228,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .grid{display:grid;gap:14px;grid-template-columns:1fr}
 
 .card{
-  position:relative;display:grid;grid-template-columns:96px 1fr;gap:14px;
+  position:relative;display:grid;grid-template-columns:104px 1fr;gap:14px;
   padding:12px;border-radius:var(--radius-lg);
   background:linear-gradient(180deg,var(--card),#3C0200);
   border:1px solid var(--line);
@@ -220,7 +238,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .card.in{opacity:1;transform:none}
 .card-media{
-  position:relative;width:96px;height:96px;border-radius:16px;overflow:hidden;
+  position:relative;width:104px;height:104px;border-radius:16px;overflow:hidden;
   background:radial-gradient(circle at 50% 42%,#5E0200,#2B0100);
   display:grid;place-items:center;
 }
@@ -264,8 +282,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @keyframes ripple{to{transform:scale(2.6);opacity:0}}
 
 /* thin-crust rows read as a price list, not as cards */
-.thin .card{grid-template-columns:1fr}
-.thin .card-media{display:none}
 .thin .card-foot{justify-content:flex-end}
 .thin .card p{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 
@@ -529,16 +545,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   <div class="crusts">
     <article class="crust">
+      <div class="crust-pic" data-pic="pan" data-alt="Pan pizza"></div>
       <h2>Pan</h2>
       <p>Thick crust pizza, light and fluffy on the inside and crunchy on the outside.</p>
       <span class="rule">Personal, medium or large</span>
     </article>
     <article class="crust">
+      <div class="crust-pic" data-pic="sausage" data-alt="Sausage crust pizza"></div>
       <h2>Sausage crust</h2>
       <p>A ring of chicken sausage baked into the golden crust. Serves 2–3 people.</p>
       <span class="rule">Same price as large pan</span>
     </article>
     <article class="crust">
+      <div class="crust-pic" data-pic="stuffed" data-alt="Stuffed crust pizza"></div>
       <h2>Stuffed crust</h2>
       <p>A ring of stringy cheese baked into the golden crust. Serves 2–3 people.</p>
       <span class="rule">Large pan + Rs.&nbsp;310</span>
@@ -559,6 +578,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   <h2>Find us</h2>
   <p>Extra cheese: personal Rs.&nbsp;180 · medium Rs.&nbsp;320 · large Rs.&nbsp;580. Sausage and stuffed crust serve 2–3 people.</p>
   <p class="towns">Aluthgama · Ambalangoda · Ambepussa · Anuradhapura · Athurugiriya · Avissawella · Badulla · Balangoda · Bambalapitiya · Bandaragama · Bandarawela · Batticaloa · Boralesgamuwa · Borella · Canowin Arcade · Chilaw · Dambulla · Dehiwala · Delgoda · Dematagoda · Ebuldeniya · Embilipitiya · Galle · Gampaha · Gampola · Ganemulla · Godagama · Hanwella · Havelock Road · Hikkaduwa · Horana · Ja-Ela · Jaffna · Kadawatha · Kaduwela · Kandana · Kandy · Kalmunai · Kalutara · Karapitiya · Katugastota · Kegalle · Kesbewa · Kiribathgoda · Kirillawala · Kochchikade · Kotahena · Kothalawala · Kotikawatta · Kottawa · Kotte · Kundasale · Kurunegala · Kuruwita · Maharagama · Makola · Malabe · Manipay · Matale · Matara · Matugama · Mawanella · Minuwangoda · Monaragala · Moratuwa · Mount Lavinia · Narahenpita · Nawala · Negombo · Nittambuwa · Nugegoda · Nuwara Eliya · One Galle Face · Panadura · Pannipitiya · Pelawatta · Peradeniya · Pilimathalawa · Piliyandala · Pinhena · Polonnaruwa · Puttalam · Ragama · Rajagiriya · Ratnapura · Seeduwa · Tangalle · Thimbirigasyaya · Trincomalee · Union Place · Wadduwa · Wattala · Wennappuwa · Yakkala</p>
+  <p>Sample photography from Pexels, free to use. Replace it with your own shots in the PHOTOS list inside this file.</p>
   <p>Menu prices as printed. This page is a demonstration build — no payment is taken and no order is sent to a restaurant.</p>
 </footer>
 
@@ -624,6 +644,68 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ---------- 1. PRICES THAT SIT OUTSIDE THE CATEGORIES ---------- */
 const CHEESE = { personal:180, medium:320, large:580 };   // extra cheese by size
 const STUFFED_EXTRA = 310;                                 // stuffed crust, on large
+
+/* ---------- 1b. PHOTOS -----------------------------------------
+   Sample pizza photography from Pexels (free to use, no credit
+   required). These are generic pizzas, not the real Sri Lankan
+   ones — swap any line for your own file, e.g. "photos/masala.jpg".
+   Keys are  categoryId::Item Name.
+   If a photo fails to load, the drawn pizza underneath shows instead.
+----------------------------------------------------------------- */
+const PX = (id, px) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${px||420}&h=${px||420}`;
+
+const HERO_PHOTO = PX(31596394, 900);
+
+const CRUST_PHOTOS = { pan:PX(9993754), sausage:PX(31094832), stuffed:PX(31587831) };
+
+const PHOTOS = {
+  /* Classic */
+  "classic::Double Chicken Surprise":                 PX(9993754),
+  "classic::Chicken Bacon & Potato with Nai Miris":   PX(6493570),
+  "classic::Chicken Tri-Party":                       PX(19786235),
+  "classic::Masala Magic":                            PX(24513338),
+  "classic::Devilled Chicken":                        PX(31094832),
+  "classic::Cheese Lovers":                           PX(31587831),
+  "classic::Tandoori Chicken":                        PX(6223196),
+  "classic::Sausage Delight":                         PX(6223193),
+
+  /* Signature */
+  "signature::Black Chicken":                         PX(6223226),
+  "signature::BBQ Chicken":                           PX(6223229),
+  "signature::Spicy Veggie with Paneer":              PX(32763320),
+  "signature::Butter Chicken Masala":                 PX(6223233),
+  "signature::Double Chicken & Cheese Fiesta":        PX(6223227),
+  "signature::Hot & Spicy Chicken":                   PX(6223198),
+  "signature::Chicken Hawaiian":                      PX(12032522),
+
+  /* Favourites */
+  "favourites::Sri Lankan Spicy Chicken":             PX(5903233),
+  "favourites::Prawn with Chicken Bacon & Jalapeno":  PX(5903266),
+  "favourites::Veggie Supreme":                       PX(35068371),
+  "favourites::Beef Pepperoni":                       PX(6068717),
+  "favourites::Hot Butter Cuttlefish":                PX(10577942),
+  "favourites::Meat Lovers":                          PX(5903315),
+
+  /* Supreme */
+  "supreme::The Ultimate Chicken Treat":              PX(9685264),
+  "supreme::Super Supreme":                           PX(32007632),
+  "supreme::Hot Garlic Prawns":                       PX(14965994),
+  "supreme::Spicy Seafood":                           PX(9685258),
+
+  /* Thin crust */
+  "thin::Margherita":                                 PX(6223186),
+  "thin::Tropical Hawaiian":                          PX(34718116),
+  "thin::Fiery Chicken":                              PX(31142295),
+  "thin::Chicken BBQ":                                PX(36178132),
+  "thin::Sri Lankan Spicy Chicken":                   PX(5903233),
+  "thin::Pepperoni Paradiso":                         PX(17403901),
+  "thin::Tandoori Chicken":                           PX(6223196),
+  "thin::Black Chicken":                              PX(6223226),
+  "thin::Chicken Ultimo":                             PX(5903382),
+  "thin::Mighty Meat":                                PX(6068718),
+  "thin::Seafood Supremo":                            PX(5903266),
+  "thin::Prawn with Chicken Bacon & Jalapeno":        PX(10577942)
+};
 
 /* ---------- 2. THE MENU ----------------------------------------
    sizes[]  key / label / price
@@ -790,7 +872,10 @@ const CRUSTS = [
    ================================================================ */
 const $  = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+/* older webviews have no matchMedia — assume motion is fine rather than break */
+const reduced = window.matchMedia
+  ? window.matchMedia("(prefers-reduced-motion: reduce)")
+  : {matches:false};
 
 /* "Rs. 2,790" — non-breaking space so the amount never wraps */
 const money = n => "Rs.\u00A0" + Math.round(n).toLocaleString("en-US");
@@ -859,20 +944,22 @@ function pizzaSVG(key, art, size){
   return out;
 }
 
-/* Either the customer's photo or the generated artwork */
-function media(item, size){
-  if (item.img){
-    return `<img src="${esc(item.img)}" alt="${esc(item.name)} pizza" loading="lazy" decoding="async"
-             onload="this.classList.add('ready')" onerror="this.remove()">
-            ${pizzaSVG(item.name, item.art, size)}`;
-  }
-  return pizzaSVG(item.name, item.art, size);
+/* A photo on top, the drawn pizza underneath as the safety net.
+   Order of preference: item.img  ->  PHOTOS table  ->  drawing only. */
+function media(item, size, catId, src){
+  const photo = src || item.img || PHOTOS[catId + "::" + item.name];
+  const art   = pizzaSVG(item.name, item.art, size);
+  if (!photo) return art;
+  return art + `<img src="${esc(photo)}" alt="${esc(item.name)} pizza" loading="lazy" decoding="async"
+            onload="this.classList.add('ready')" onerror="this.remove()">`;
 }
 
 /* ================================================================
    4. BUILD THE PAGE
    ================================================================ */
-$("#heroArt").innerHTML = pizzaSVG("hero-pizza", ["pepperoni","capsicum","mushroom","onion","olive"], "lg");
+$("#heroArt").innerHTML = media(
+  {name:"Freshly baked pizza", art:["pepperoni","capsicum","mushroom","onion","olive"]},
+  "lg", null, HERO_PHOTO);
 
 const menuEl = $("#menu"), chipsEl = $("#chips");
 
@@ -916,7 +1003,7 @@ MENU.forEach(cat=>{
       : `<span class="price">${money(from)}<small>personal onwards</small></span>`;
 
     return `<article class="card" style="--d:${(i%6)*60}ms" data-cat="${cat.id}" data-i="${i}">
-      <div class="card-media">${media(item,"sm")}</div>
+      <div class="card-media">${media(item,"sm",cat.id)}</div>
       <div class="card-body">
         ${tags ? `<div class="tags">${tags}</div>` : ""}
         <h3>${esc(item.name)}</h3>
@@ -1046,7 +1133,7 @@ function openItem(catId, index, originBtn){
 
   $("#isTitle").textContent = item.name;
   $("#isDesc").textContent  = item.desc || "";
-  $("#isArt").innerHTML     = media(item,"lg");
+  $("#isArt").innerHTML     = media(item,"lg",cat.id);
 
   renderItemBody();
   show(sheetI);
@@ -1105,7 +1192,12 @@ function renderItemBody(){
     <button data-qty="1" aria-label="One more">+</button>
   </div></div>`;
 
-  $("#isBody").innerHTML = html;
+  /* the body is rebuilt on every choice, so put the scroll back
+     where it was — otherwise picking toppings jumps you to the top */
+  const body = $("#isBody");
+  const keep = body.scrollTop;
+  body.innerHTML = html;
+  body.scrollTop = keep;
   updateItemTotal();
 }
 
@@ -1390,6 +1482,13 @@ $("#barBtn").addEventListener("click", ()=>{ step = "cart"; renderCart(); show(s
 $("#csClose").addEventListener("click", ()=>{
   hide(sheetC);
   if (step === "done"){ cart = []; step = "cart"; paintCart(); }
+});
+
+/* fill the three crust thumbnails */
+$$(".crust-pic").forEach(el=>{
+  const src = CRUST_PHOTOS[el.dataset.pic];
+  el.innerHTML = `<img src="${esc(src)}" alt="${esc(el.dataset.alt)}" loading="lazy" decoding="async"
+                   onload="this.classList.add('ready')" onerror="this.closest('.crust-pic').remove()">`;
 });
 
 paintCart();
