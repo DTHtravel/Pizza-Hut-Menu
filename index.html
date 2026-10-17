@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en-LK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pizza Hut Sri Lanka — Menu</title>
+<meta name="description" content="Browse the full Pizza Hut Sri Lanka pizza menu, choose your crust and place an order.">
+<meta name="theme-color" content="#340100">
+<style>
+/* ============================================================
+   1. TOKENS
+   The four brand colours are the only hues on the page.
+   Everything else is a tint or shade of them.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+
+  --maroon-900:#340100;   /* deepest maroon — page + footer      */
+  --red-800:#700100;      /* dark red — banners + card surfaces  */
+  --red-500:#FE1520;      /* bright red — buttons, prices        */
+  --white:#FFFFFF;
+
+  --ink:#FFFFFF;
+  --ink-soft:rgba(255,255,255,.72);
+  --ink-faint:rgba(255,255,255,.48);
+  --line:rgba(255,255,255,.14);
+  --card:#4A0300;                 /* between maroon and dark red */
+  --card-hi:rgba(255,255,255,.05);
+
+  --crust:#D79C52;
+  --cheese:#F0BE62;
+  --sauce:#B0281C;
+
+  /* type */
+  --display:"Arial Black","Arial Bold",Gadget,"Helvetica Neue",Helvetica,sans-serif;
+  --text:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+
+  /* rhythm */
+  --gutter:16px;
+  --radius:14px;
+  --radius-lg:22px;
+  --header-h:58px;
+  --chips-h:52px;
+
+  /* motion */
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.22,.61,.36,1);
+
+  /* safe areas (0 on desktop) */
+  --sa-top:env(safe-area-inset-top,0px);
+  --sa-bot:env(safe-area-inset-bottom,0px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--header-h) + var(--chips-h) + var(--sa-top) + 8px);
+}
+
+body{
+  margin:0;
+  padding-top:var(--sa-top);
+  background:var(--maroon-900);
+  color:var(--ink);
+  font-family:var(--text);
+  font-size:16px;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+
+/* paints the translucent status-bar strip on phones */
+body::before{
+  content:"";position:fixed;inset:0 0 auto;height:var(--sa-top);
+  background:var(--maroon-900);z-index:60;
+}
+
+body.locked{overflow:hidden}
+
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+:focus-visible{outline:3px solid var(--red-500);outline-offset:2px;border-radius:6px}
+
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ============================================================
+   2. HEADER
+   ============================================================ */
+.header{
+  position:fixed;top:var(--sa-top);left:0;right:0;height:var(--header-h);z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--gutter);
+  background:rgba(52,1,0,.86);
+  backdrop-filter:saturate(160%) blur(14px);
+  -webkit-backdrop-filter:saturate(160%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none}
+.brand-name{font-family:var(--display);font-size:16px;letter-spacing:-.4px;line-height:1}
+.brand-sub{font-size:10px;letter-spacing:2px;color:var(--ink-faint);line-height:1.4}
+
+.cart-btn{
+  position:relative;width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;background:var(--card-hi);
+  transition:transform .18s var(--spring),background .2s linear;
+}
+.cart-btn:active{transform:scale(.9)}
+.cart-count{
+  position:absolute;top:1px;right:0;min-width:20px;height:20px;padding:0 5px;
+  border-radius:10px;background:var(--red-500);color:var(--white);
+  font-size:11px;font-weight:800;line-height:20px;text-align:center;
+  transform:scale(0);transition:transform .3s var(--spring);
+}
+.cart-count.on{transform:scale(1)}
+.cart-count.pop{animation:pop .45s var(--spring)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+
+/* ============================================================
+   3. HERO — the crust panel from the printed menu
+   ============================================================ */
+.hero{
+  position:relative;padding:calc(var(--header-h) + 26px) var(--gutter) 26px;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #700100 0%, rgba(112,1,0,0) 62%),
+    var(--maroon-900);
+  overflow:hidden;
+}
+.hero-art{
+  width:min(58vw,220px);margin:0 auto 18px;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));
+}
+.hero-art svg{animation:spin 48s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hero h1{
+  font-family:var(--display);font-size:clamp(30px,10vw,46px);line-height:.92;
+  margin:0 0 10px;text-align:center;letter-spacing:-1.2px;text-transform:uppercase;
+}
+.hero p{margin:0 auto;max-width:34ch;text-align:center;color:var(--ink-soft);font-size:15px}
+
+.crusts{
+  display:flex;gap:12px;margin:22px -16px 0;padding:0 16px 6px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -ms-overflow-style:none;scrollbar-width:none;
+}
+.crusts::-webkit-scrollbar{display:none}
+.crust{
+  scroll-snap-align:center;flex:0 0 76%;max-width:300px;
+  background:linear-gradient(180deg,var(--red-800),var(--card));
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:16px 16px 18px;
+}
+.crust h2{font-family:var(--display);font-size:17px;margin:0 0 6px;letter-spacing:-.3px}
+.crust p{margin:0;font-size:13.5px;color:var(--ink-soft);text-align:left;line-height:1.45}
+.crust .rule{
+  display:inline-block;margin-top:10px;padding:4px 10px;border-radius:999px;
+  background:var(--red-500);font-size:12px;font-weight:700;
+}
+
+/* ============================================================
+   4. CATEGORY CHIPS
+   ============================================================ */
+.chips-wrap{
+  position:sticky;top:calc(var(--header-h) + var(--sa-top));z-index:40;
+  will-change:transform;transform:translateZ(0);
+  height:var(--chips-h);display:flex;align-items:center;
+  background:rgba(52,1,0,.92);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.chips{
+  display:flex;gap:8px;width:100%;padding:0 var(--gutter);
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;-ms-overflow-style:none;scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:none;height:36px;padding:0 15px;border-radius:999px;
+  background:var(--card-hi);border:1px solid var(--line);
+  font-size:13.5px;font-weight:600;white-space:nowrap;color:var(--ink-soft);
+  transition:transform .2s var(--spring),background .2s linear,color .2s linear;
+}
+.chip:active{transform:scale(.94)}
+.chip.on{background:var(--red-500);border-color:var(--red-500);color:var(--white)}
+
+/* ============================================================
+   5. SECTIONS + ITEM CARDS
+   ============================================================ */
+.section{padding:28px var(--gutter) 6px}
+.banner{
+  display:flex;align-items:center;gap:12px;margin:0 0 6px;
+}
+.banner-name{
+  font-family:var(--display);font-size:clamp(22px,7vw,30px);text-transform:uppercase;
+  letter-spacing:-.8px;transform:skewX(-7deg);transform-origin:left bottom;margin:0;
+}
+.banner-line{flex:1;height:3px;background:var(--red-500);border-radius:2px;transform:skewX(-7deg)}
+
+.sizes{
+  display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;list-style:none;
+}
+.sizes li{
+  font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:8px;
+  background:var(--red-800);border:1px solid var(--line);
+}
+.sizes li span{color:var(--ink-faint);font-weight:600;margin-right:5px}
+
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+
+.card{
+  position:relative;display:grid;grid-template-columns:96px 1fr;gap:14px;
+  padding:12px;border-radius:var(--radius-lg);
+  background:linear-gradient(180deg,var(--card),#3C0200);
+  border:1px solid var(--line);
+  opacity:0;transform:translateY(22px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease);
+  transition-delay:var(--d,0ms);
+}
+.card.in{opacity:1;transform:none}
+.card-media{
+  position:relative;width:96px;height:96px;border-radius:16px;overflow:hidden;
+  background:radial-gradient(circle at 50% 42%,#5E0200,#2B0100);
+  display:grid;place-items:center;
+}
+.card-media svg{width:88%;height:88%}
+.card-media img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(12px);transform:scale(1.06);opacity:0;
+  transition:filter .5s var(--ease),opacity .4s linear,transform .5s var(--ease);
+}
+.card-media img.ready{filter:none;transform:none;opacity:1}
+
+.card-body{min-width:0;display:flex;flex-direction:column}
+.card h3{
+  margin:0 0 4px;font-size:15.5px;font-weight:800;line-height:1.25;letter-spacing:-.2px;
+}
+.card p{
+  margin:0 0 10px;font-size:13px;line-height:1.45;color:var(--ink-soft);
+  max-width:46ch;
+}
+.tags{display:flex;gap:6px;margin:0 0 6px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:800;letter-spacing:.6px;padding:3px 7px;border-radius:999px}
+.tag.veg{background:#1C6B2E;color:var(--white)}
+.tag.new{background:var(--red-500);color:var(--white)}
+
+.card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-size:14px;font-weight:800;color:var(--white)}
+.price small{display:block;font-size:11px;font-weight:600;color:var(--ink-faint)}
+
+.add{
+  position:relative;overflow:hidden;min-width:74px;height:40px;padding:0 16px;
+  border-radius:999px;background:var(--red-500);color:var(--white);
+  font-size:14px;font-weight:800;
+  transition:transform .18s var(--spring),filter .2s linear;
+}
+.add:active{transform:scale(.92)}
+.ripple{
+  position:absolute;border-radius:50%;background:rgba(255,255,255,.45);
+  transform:scale(0);opacity:.8;pointer-events:none;
+  animation:ripple .55s var(--ease) forwards;
+}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+
+/* thin-crust rows read as a price list, not as cards */
+.thin .card{grid-template-columns:1fr}
+.thin .card-media{display:none}
+.thin .card-foot{justify-content:flex-end}
+.thin .card p{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ============================================================
+   6. FOOTER
+   ============================================================ */
+.foot{
+  margin-top:34px;padding:26px var(--gutter) calc(120px + var(--sa-bot));
+  background:#2A0100;border-top:1px solid var(--line);
+}
+.foot h2{font-family:var(--display);font-size:16px;margin:0 0 10px;letter-spacing:-.2px}
+.foot p{margin:0 0 14px;font-size:12.5px;color:var(--ink-faint);line-height:1.6}
+.towns{font-size:11.5px;color:rgba(255,255,255,.34);line-height:1.8;word-spacing:2px}
+
+/* ============================================================
+   7. STICKY CART BAR
+   ============================================================ */
+.bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:45;
+  padding:10px var(--gutter) calc(10px + var(--sa-bot));
+  background:linear-gradient(180deg,rgba(52,1,0,0),rgba(52,1,0,.92) 28%);
+  transform:translateY(130%);transition:transform .4s var(--spring),visibility .4s linear;
+  pointer-events:none;visibility:hidden;
+}
+.bar.on{transform:none;pointer-events:auto;visibility:visible}
+.bar button{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  width:100%;height:54px;padding:0 20px;border-radius:999px;
+  background:var(--red-500);color:var(--white);font-weight:800;font-size:15px;
+  box-shadow:0 14px 30px rgba(254,21,32,.32);
+  transition:transform .18s var(--spring);
+}
+.bar button:active{transform:scale(.97)}
+.bar .meta{font-size:12.5px;font-weight:600;opacity:.85}
+
+/* ============================================================
+   8. SHEETS (item options + cart) — one pattern, two uses
+   ============================================================ */
+.scrim{
+  position:fixed;inset:0;z-index:70;background:rgba(10,0,0,.66);
+  opacity:0;pointer-events:none;transition:opacity .3s linear;
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+}
+.scrim.on{opacity:1;pointer-events:auto}
+
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:80;
+  max-height:92vh;max-height:92dvh;display:flex;flex-direction:column;
+  visibility:hidden;
+  background:linear-gradient(180deg,#520200,var(--maroon-900) 42%);
+  border-radius:26px 26px 0 0;border-top:1px solid rgba(255,255,255,.18);
+  transform:translateY(100%);
+  transition:transform .42s var(--spring),visibility .42s linear;
+  padding-bottom:var(--sa-bot);
+}
+.sheet.on{transform:none;visibility:visible}
+@media (min-width:720px){
+  .sheet{left:50%;width:560px;transform:translate(-50%,100%)}
+  .sheet.on{transform:translate(-50%,0)}
+}
+.grab{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);margin:10px auto 0;flex:none}
+
+.sheet-head{
+  display:flex;align-items:flex-start;gap:14px;padding:14px var(--gutter) 10px;flex:none;
+}
+.sheet-head .card-media{width:68px;height:68px;flex:none}
+.sheet-head h2{font-family:var(--display);font-size:19px;margin:0 0 4px;line-height:1.1;letter-spacing:-.3px}
+.sheet-head p{margin:0;font-size:13px;color:var(--ink-soft);line-height:1.45}
+.close{
+  width:36px;height:36px;border-radius:50%;background:var(--card-hi);flex:none;
+  display:grid;place-items:center;font-size:18px;line-height:1;
+  transition:transform .18s var(--spring);
+}
+.close:active{transform:scale(.88)}
+
+.sheet-body{overflow-y:auto;overscroll-behavior:contain;padding:4px var(--gutter) 10px;-webkit-overflow-scrolling:touch}
+
+.field{margin:16px 0 0}
+.field > h3{
+  font-size:12.5px;font-weight:700;letter-spacing:.3px;margin:0 0 9px;color:var(--ink-soft);
+}
+.field > h3 em{font-style:normal;color:var(--ink-faint);font-weight:600}
+
+.opts{display:grid;gap:8px}
+.opts.row{grid-template-columns:repeat(3,1fr)}
+.opt{
+  position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  min-height:48px;padding:10px 14px;border-radius:14px;text-align:left;
+  background:var(--card-hi);border:1.5px solid var(--line);
+  font-size:14px;font-weight:600;
+  transition:transform .18s var(--spring),border-color .2s linear,background .2s linear;
+}
+.opts.row .opt{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:8px 10px}
+.opt:active{transform:scale(.96)}
+.opt.on{border-color:var(--red-500);background:rgba(254,21,32,.16)}
+.opt[disabled]{opacity:.34;pointer-events:none}
+.opt .sub{font-size:12px;font-weight:700;color:var(--ink-faint)}
+.opt.on .sub{color:var(--white)}
+.opt .note{font-size:11.5px;font-weight:600;color:var(--ink-faint);display:block;margin-top:2px}
+
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{
+  width:40px;height:40px;border-radius:12px;background:var(--card-hi);
+  border:1px solid var(--line);font-size:19px;font-weight:700;line-height:1;
+  display:grid;place-items:center;
+  transition:transform .16s var(--spring);
+}
+.stepper button:active{transform:scale(.88)}
+.stepper output{min-width:30px;text-align:center;font-weight:800;font-size:16px}
+
+.sheet-foot{
+  flex:none;padding:12px var(--gutter) 16px;border-top:1px solid var(--line);
+  background:rgba(52,1,0,.6);
+}
+.cta{
+  position:relative;overflow:hidden;width:100%;height:54px;border-radius:999px;
+  background:var(--red-500);color:var(--white);font-weight:800;font-size:15.5px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .18s var(--spring),filter .2s linear;
+}
+.cta:active{transform:scale(.97)}
+.cta[disabled]{filter:grayscale(.55) brightness(.7);pointer-events:none}
+.cta .amt{font-variant-numeric:tabular-nums}
+
+/* cart lines */
+.line{
+  display:grid;grid-template-columns:1fr auto;gap:10px 12px;align-items:start;
+  padding:14px 0;border-bottom:1px solid var(--line);
+}
+.line h3{margin:0 0 3px;font-size:15px;font-weight:800;line-height:1.25}
+.line p{margin:0;font-size:12.5px;color:var(--ink-faint);line-height:1.5}
+.line .money{font-weight:800;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.line .stepper{grid-column:1/-1}
+.line .stepper button{width:36px;height:36px;font-size:17px}
+.remove{font-size:12.5px;font-weight:700;color:var(--red-500);margin-left:6px;padding:8px 4px}
+
+.totals{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0 4px}
+.totals span:first-child{font-size:15px;color:var(--ink-soft)}
+.totals span:last-child{font-family:var(--display);font-size:24px;letter-spacing:-.5px}
+.fineprint{font-size:11.5px;color:var(--ink-faint);margin:0 0 4px;line-height:1.5}
+
+.empty{text-align:center;padding:44px 10px 54px}
+.empty svg{width:76px;height:76px;margin:0 auto 14px;opacity:.5}
+.empty h3{font-family:var(--display);font-size:19px;margin:0 0 6px}
+.empty p{margin:0;color:var(--ink-soft);font-size:14px}
+
+/* checkout form */
+.form label{display:block;margin:14px 0 0}
+.form .lab{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin:0 0 7px}
+.form input,.form textarea{
+  width:100%;min-height:50px;padding:13px 14px;border-radius:14px;
+  background:rgba(0,0,0,.26);border:1.5px solid var(--line);color:var(--ink);
+  font:inherit;font-size:16px; /* 16px stops iOS zooming on focus */
+  transition:border-color .2s linear;
+}
+.form textarea{min-height:88px;resize:vertical;line-height:1.5}
+.form input::placeholder,.form textarea::placeholder{color:rgba(255,255,255,.3)}
+.form input:focus,.form textarea:focus{border-color:var(--red-500);outline:none}
+.form input[aria-invalid="true"],.form textarea[aria-invalid="true"]{border-color:#FF6B6B}
+.err{display:block;font-size:12px;color:#FF8A8A;margin:6px 0 0;min-height:0}
+
+/* confirmation */
+.done{text-align:center;padding:36px 16px 30px}
+.tick{width:92px;height:92px;margin:0 auto 20px}
+.tick circle{
+  fill:none;stroke:var(--red-500);stroke-width:5;
+  stroke-dasharray:276;stroke-dashoffset:276;
+  animation:draw .7s var(--ease) forwards;
+}
+.tick path{
+  fill:none;stroke:var(--white);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:60;stroke-dashoffset:60;
+  animation:draw .4s var(--ease) .55s forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done h2{font-family:var(--display);font-size:25px;margin:0 0 8px;letter-spacing:-.5px}
+.done p{margin:0 auto 6px;max-width:34ch;color:var(--ink-soft);font-size:14.5px}
+.order-no{
+  display:inline-block;margin:14px 0 4px;padding:9px 18px;border-radius:999px;
+  background:var(--red-800);border:1px solid var(--line);
+  font-family:var(--display);font-size:17px;letter-spacing:1px;
+}
+
+/* fly-to-cart puck */
+.fly{
+  position:fixed;z-index:90;width:34px;height:34px;border-radius:50%;
+  background:var(--cheese);border:3px solid var(--crust);
+  pointer-events:none;box-shadow:0 6px 16px rgba(0,0,0,.4);
+}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:calc(84px + var(--sa-bot));z-index:85;
+  padding:11px 18px;border-radius:999px;background:var(--white);color:var(--maroon-900);
+  font-size:13.5px;font-weight:800;white-space:nowrap;
+  transform:translate(-50%,24px);opacity:0;pointer-events:none;
+  transition:transform .35s var(--spring),opacity .25s linear;
+  box-shadow:0 10px 28px rgba(0,0,0,.4);
+}
+.toast.on{transform:translate(-50%,0);opacity:1}
+
+/* ============================================================
+   9. WIDER SCREENS — mobile layout scales up, never rebuilt
+   ============================================================ */
+@media (min-width:600px){
+  :root{--gutter:24px}
+  .grid{grid-template-columns:1fr 1fr}
+  .crust{flex:0 0 46%}
+}
+@media (min-width:980px){
+  .grid{grid-template-columns:1fr 1fr 1fr}
+  .section,.hero,.chips,.foot{max-width:1120px;margin-inline:auto}
+  .crust{flex:0 0 31%}
+  .bar{left:50%;transform:translate(-50%,130%);width:420px}
+  .bar.on{transform:translate(-50%,0)}
+}
+
+/* ============================================================
+   10. REDUCED MOTION — everything still works, nothing moves
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+  .card{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ HEADER ============================ -->
+<header class="header">
+  <div class="brand">
+    <!-- Swap this SVG for your own logo file if you have one -->
+    <svg width="40" height="30" viewBox="0 0 40 30" aria-hidden="true">
+      <path d="M20 2 36 12v3H4v-3L20 2Z" fill="#FE1520"/>
+      <path d="M6 15h28v4a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-4Z" fill="#FFFFFF" opacity=".92"/>
+      <path d="M12 22h4v6h-4zm12 0h4v6h-4z" fill="#FE1520"/>
+    </svg>
+    <div>
+      <div class="brand-name">Pizza Hut</div>
+      <div class="brand-sub">SRI LANKA</div>
+    </div>
+  </div>
+  <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
+      <circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+    </svg>
+    <span class="cart-count" id="cartCount" aria-hidden="true">0</span>
+  </button>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+  <h1>Choose your crust</h1>
+  <p>Every pan pizza comes in personal, medium and large. Pick a crust, pick a pizza, we bake.</p>
+
+  <div class="crusts">
+    <article class="crust">
+      <h2>Pan</h2>
+      <p>Thick crust pizza, light and fluffy on the inside and crunchy on the outside.</p>
+      <span class="rule">Personal, medium or large</span>
+    </article>
+    <article class="crust">
+      <h2>Sausage crust</h2>
+      <p>A ring of chicken sausage baked into the golden crust. Serves 2–3 people.</p>
+      <span class="rule">Same price as large pan</span>
+    </article>
+    <article class="crust">
+      <h2>Stuffed crust</h2>
+      <p>A ring of stringy cheese baked into the golden crust. Serves 2–3 people.</p>
+      <span class="rule">Large pan + Rs.&nbsp;310</span>
+    </article>
+  </div>
+</section>
+
+<!-- ======================= CATEGORY CHIPS ======================= -->
+<nav class="chips-wrap" aria-label="Menu sections">
+  <div class="chips" id="chips"></div>
+</nav>
+
+<!-- ========================== SECTIONS ========================== -->
+<main id="menu"></main>
+
+<!-- ========================== FOOTER ========================== -->
+<footer class="foot">
+  <h2>Find us</h2>
+  <p>Extra cheese: personal Rs.&nbsp;180 · medium Rs.&nbsp;320 · large Rs.&nbsp;580. Sausage and stuffed crust serve 2–3 people.</p>
+  <p class="towns">Aluthgama · Ambalangoda · Ambepussa · Anuradhapura · Athurugiriya · Avissawella · Badulla · Balangoda · Bambalapitiya · Bandaragama · Bandarawela · Batticaloa · Boralesgamuwa · Borella · Canowin Arcade · Chilaw · Dambulla · Dehiwala · Delgoda · Dematagoda · Ebuldeniya · Embilipitiya · Galle · Gampaha · Gampola · Ganemulla · Godagama · Hanwella · Havelock Road · Hikkaduwa · Horana · Ja-Ela · Jaffna · Kadawatha · Kaduwela · Kandana · Kandy · Kalmunai · Kalutara · Karapitiya · Katugastota · Kegalle · Kesbewa · Kiribathgoda · Kirillawala · Kochchikade · Kotahena · Kothalawala · Kotikawatta · Kottawa · Kotte · Kundasale · Kurunegala · Kuruwita · Maharagama · Makola · Malabe · Manipay · Matale · Matara · Matugama · Mawanella · Minuwangoda · Monaragala · Moratuwa · Mount Lavinia · Narahenpita · Nawala · Negombo · Nittambuwa · Nugegoda · Nuwara Eliya · One Galle Face · Panadura · Pannipitiya · Pelawatta · Peradeniya · Pilimathalawa · Piliyandala · Pinhena · Polonnaruwa · Puttalam · Ragama · Rajagiriya · Ratnapura · Seeduwa · Tangalle · Thimbirigasyaya · Trincomalee · Union Place · Wadduwa · Wattala · Wennappuwa · Yakkala</p>
+  <p>Menu prices as printed. This page is a demonstration build — no payment is taken and no order is sent to a restaurant.</p>
+</footer>
+
+<!-- ======================= STICKY CART BAR ======================= -->
+<div class="bar" id="bar">
+  <button id="barBtn">
+    <span id="barLeft">View cart</span>
+    <span class="meta" id="barRight">Rs.&nbsp;0</span>
+  </button>
+</div>
+
+<!-- ============================ SHEETS ============================ -->
+<div class="scrim" id="scrim"></div>
+
+<!-- item options -->
+<section class="sheet" id="itemSheet" role="dialog" aria-modal="true" aria-labelledby="isTitle" aria-hidden="true">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div class="card-media" id="isArt" aria-hidden="true"></div>
+    <div style="flex:1;min-width:0">
+      <h2 id="isTitle">Item</h2>
+      <p id="isDesc"></p>
+    </div>
+    <button class="close" id="isClose" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="sheet-body" id="isBody"></div>
+  <div class="sheet-foot">
+    <button class="cta" id="isAdd">
+      <span>Add to cart</span><span class="amt" id="isTotal">Rs.&nbsp;0</span>
+    </button>
+  </div>
+</section>
+
+<!-- cart / checkout / confirmation -->
+<section class="sheet" id="cartSheet" role="dialog" aria-modal="true" aria-labelledby="csTitle" aria-hidden="true">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div style="flex:1;min-width:0">
+      <h2 id="csTitle">Your order</h2>
+      <p id="csSub"></p>
+    </div>
+    <button class="close" id="csClose" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="sheet-body" id="csBody"></div>
+  <div class="sheet-foot" id="csFoot"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==================================================================
+   PIZZA HUT SRI LANKA — WEB MENU
+   One file. No frameworks. No network calls. Works offline.
+
+   WHERE TO EDIT
+   -------------
+   • Prices and items ............ MENU (just below)
+   • Extra cheese prices ......... CHEESE
+   • Stuffed crust surcharge ..... STUFFED_EXTRA
+   • Your own photos ............. add  img:"photos/name.jpg"  to any item
+   ================================================================== */
+
+/* ---------- 1. PRICES THAT SIT OUTSIDE THE CATEGORIES ---------- */
+const CHEESE = { personal:180, medium:320, large:580 };   // extra cheese by size
+const STUFFED_EXTRA = 310;                                 // stuffed crust, on large
+
+/* ---------- 2. THE MENU ----------------------------------------
+   sizes[]  key / label / price
+   badges[] "veg" and/or "new"
+   art[]    topping keywords — these drive the generated pizza artwork
+   img      optional: path to your own photo, e.g. "photos/masala.jpg"
+   pick     optional: lets the customer choose N toppings (Meat Lovers)
+----------------------------------------------------------------- */
+const MENU = [
+  {
+    id:"classic", name:"Classic", crusts:true,
+    sizes:[
+      {key:"personal",label:"Personal",price:830},
+      {key:"medium",  label:"Medium",  price:1550},
+      {key:"large",   label:"Large",   price:2790}
+    ],
+    items:[
+      {name:"Double Chicken Surprise", badges:["new"],
+       desc:"Devilled chicken and chicken sausages with onions, capsicum and one layer of cheese.",
+       art:["chicken","sausage","onion","capsicum"]},
+      {name:"Chicken Bacon & Potato with Nai Miris", badges:["new"],
+       desc:"Chicken bacon and spicy potatoes on a fiery base of nai miris sauce with onions, green chillies and one layer of cheese.",
+       art:["bacon","potato","onion","chilli"]},
+      {name:"Chicken Tri-Party", badges:["new"],
+       desc:"BBQ chicken, chicken bacon and chicken sausages with onions, bell pepper and one layer of cheese.",
+       art:["chicken","bacon","sausage","capsicum"]},
+      {name:"Masala Magic", badges:["new"],
+       desc:"Tandoori chicken and butter chicken, with fresh coriander, onions and one layer of cheese.",
+       art:["tandoori","chicken","coriander","onion"]},
+      {name:"Devilled Chicken", badges:[],
+       desc:"Devilled chicken, capsicums, onions and cheese.",
+       art:["devilled","capsicum","onion"]},
+      {name:"Cheese Lovers", badges:["veg"],
+       desc:"Rich tomato sauce topped with a triple layer of cheese.",
+       art:["cheese","cheese"]},
+      {name:"Tandoori Chicken", badges:[],
+       desc:"Tandoori chicken, onions and cheese.",
+       art:["tandoori","onion"]},
+      {name:"Sausage Delight", badges:[],
+       desc:"Chicken sausages, onions and cheese.",
+       art:["sausage","onion"]}
+    ]
+  },
+  {
+    id:"signature", name:"Signature", crusts:true,
+    sizes:[
+      {key:"personal",label:"Personal",price:930},
+      {key:"medium",  label:"Medium",  price:1690},
+      {key:"large",   label:"Large",   price:3080}
+    ],
+    items:[
+      {name:"Black Chicken", badges:[],
+       desc:"Black chicken, onions and cheese.", art:["black","onion"]},
+      {name:"BBQ Chicken", badges:[],
+       desc:"BBQ chicken, jalapenos, onions and cheese.", art:["chicken","jalapeno","onion"]},
+      {name:"Spicy Veggie with Paneer", badges:["veg"],
+       desc:"Paneer, veggie masala, pineapple and cheese.", art:["paneer","capsicum","pineapple"]},
+      {name:"Butter Chicken Masala", badges:[],
+       desc:"Butter masala chicken, onions, ginger and garlic with coriander and a double layer of cheese.",
+       art:["chicken","onion","coriander","cheese"]},
+      {name:"Double Chicken & Cheese Fiesta", badges:[],
+       desc:"Chicken sausages, spicy chicken, onions, jalapenos and a double layer of cheese.",
+       art:["sausage","devilled","jalapeno","cheese"]},
+      {name:"Hot & Spicy Chicken", badges:[],
+       desc:"Spicy chicken, capsicums, onions and cheese.", art:["devilled","capsicum","onion"]},
+      {name:"Chicken Hawaiian", badges:[],
+       desc:"Chicken ham, pineapple and cheese.", art:["ham","pineapple"]}
+    ]
+  },
+  {
+    id:"favourites", name:"Favourites", crusts:true,
+    sizes:[
+      {key:"personal",label:"Personal",price:1020},
+      {key:"medium",  label:"Medium",  price:1860},
+      {key:"large",   label:"Large",   price:3400}
+    ],
+    items:[
+      {name:"Sri Lankan Spicy Chicken", badges:[],
+       desc:"Black chicken, devilled chicken, chicken sausages, nai miris, garlic, onions and cheese.",
+       art:["black","devilled","sausage","chilli","onion"]},
+      {name:"Prawn with Chicken Bacon & Jalapeno", badges:[],
+       desc:"Prawns, chicken bacon, jalapenos, green chillies, spring onions and cheese.",
+       art:["prawn","bacon","jalapeno","chilli"]},
+      {name:"Veggie Supreme", badges:["veg"],
+       desc:"Mushrooms, tomatoes, onions, olives, bell peppers and cheese.",
+       art:["mushroom","tomato","onion","olive","capsicum"]},
+      {name:"Beef Pepperoni", badges:[],
+       desc:"Delicious beef pepperoni in pizza sauce and cheese.", art:["pepperoni","pepperoni"]},
+      {name:"Hot Butter Cuttlefish", badges:[],
+       desc:"Hot butter cuttlefish, chili flakes, butter, spring onions, capsicums and cheese.",
+       art:["cuttlefish","chilli","onion","capsicum"]},
+      {name:"Meat Lovers", badges:[],
+       desc:"A delicious mix of 4 toppings of your choice along with cheese.",
+       art:["chicken","bacon","sausage","pepperoni"],
+       pick:{count:4, label:"Pick 4 toppings",
+             options:["Chicken bacon","Chicken sausage","BBQ chicken","Spicy chicken","Tandoori chicken","Beef pepperoni"]}}
+    ]
+  },
+  {
+    id:"supreme", name:"Supreme", crusts:true,
+    sizes:[
+      {key:"personal",label:"Personal",price:1260},
+      {key:"medium",  label:"Medium",  price:2370},
+      {key:"large",   label:"Large",   price:4160}
+    ],
+    items:[
+      {name:"The Ultimate Chicken Treat", badges:[],
+       desc:"Roast chicken, BBQ chicken, chicken bacon, chicken sausages, mushrooms, green peppers, onions, green chillies and cheese.",
+       art:["chicken","bacon","sausage","mushroom","capsicum","chilli"]},
+      {name:"Super Supreme", badges:[],
+       desc:"Roast chicken, beef pepperoni, chicken bacon, chicken sausages, pineapple, bell peppers, mushrooms, onions, olives and cheese.",
+       art:["chicken","pepperoni","bacon","pineapple","capsicum","mushroom","olive"]},
+      {name:"Hot Garlic Prawns", badges:[],
+       desc:"Spicy prawns, hot garlic sauce, onions, bell peppers, tomatoes and cheese.",
+       art:["prawn","onion","capsicum","tomato"]},
+      {name:"Spicy Seafood", badges:[],
+       desc:"Prawns, cuttlefish, onions, bell peppers and a double layer of cheese.",
+       art:["prawn","cuttlefish","onion","capsicum","cheese"]}
+    ]
+  },
+  {
+    /* Thin crust is priced per pizza, so each item carries its own two prices */
+    id:"thin", name:"Thin Crust", crusts:false, perItemPrice:true,
+    blurb:"Thin crust range, in regular and large.",
+    items:[
+      {name:"Margherita", badges:["veg"], art:["tomato","cheese"],
+       sizes:[{key:"regular",label:"Regular",price:1550},{key:"large",label:"Large",price:2790}]},
+      {name:"Tropical Hawaiian", badges:[], art:["ham","pineapple"],
+       sizes:[{key:"regular",label:"Regular",price:1550},{key:"large",label:"Large",price:2790}]},
+      {name:"Fiery Chicken", badges:[], art:["devilled","chilli"],
+       sizes:[{key:"regular",label:"Regular",price:1550},{key:"large",label:"Large",price:2790}]},
+      {name:"Chicken BBQ", badges:[], art:["chicken","onion"],
+       sizes:[{key:"regular",label:"Regular",price:1670},{key:"large",label:"Large",price:3090}]},
+      {name:"Sri Lankan Spicy Chicken", badges:[], art:["black","devilled","chilli"],
+       sizes:[{key:"regular",label:"Regular",price:1670},{key:"large",label:"Large",price:3090}]},
+      {name:"Pepperoni Paradiso", badges:[], art:["pepperoni","pepperoni"],
+       sizes:[{key:"regular",label:"Regular",price:1670},{key:"large",label:"Large",price:3090}]},
+      {name:"Tandoori Chicken", badges:[], art:["tandoori","onion"],
+       sizes:[{key:"regular",label:"Regular",price:1670},{key:"large",label:"Large",price:3090}]},
+      {name:"Black Chicken", badges:[], art:["black","onion"],
+       sizes:[{key:"regular",label:"Regular",price:1670},{key:"large",label:"Large",price:3090}]},
+      {name:"Chicken Ultimo", badges:[], art:["chicken","bacon","capsicum"],
+       sizes:[{key:"regular",label:"Regular",price:1790},{key:"large",label:"Large",price:3330}]},
+      {name:"Mighty Meat", badges:[], art:["pepperoni","sausage","bacon"],
+       sizes:[{key:"regular",label:"Regular",price:1790},{key:"large",label:"Large",price:3330}]},
+      {name:"Seafood Supremo", badges:[], art:["prawn","cuttlefish","capsicum"],
+       sizes:[{key:"regular",label:"Regular",price:1790},{key:"large",label:"Large",price:3330}]},
+      {name:"Prawn with Chicken Bacon & Jalapeno", badges:[], art:["prawn","bacon","jalapeno"],
+       sizes:[{key:"regular",label:"Regular",price:1790},{key:"large",label:"Large",price:3330}]}
+    ]
+  }
+];
+
+/* Crust options for pan pizzas. Sausage and stuffed are large only — the
+   printed menu prices them off the large pan pizza and they serve 2–3. */
+const CRUSTS = [
+  {key:"pan",     label:"Pan",            extra:0,             note:"Any size",    largeOnly:false},
+  {key:"sausage", label:"Sausage crust",  extra:0,             note:"Large only",  largeOnly:true},
+  {key:"stuffed", label:"Stuffed crust",  extra:STUFFED_EXTRA, note:"Large only",  largeOnly:true}
+];
+
+/* ================================================================
+   3. HELPERS
+   ================================================================ */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+/* "Rs. 2,790" — non-breaking space so the amount never wraps */
+const money = n => "Rs.\u00A0" + Math.round(n).toLocaleString("en-US");
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* Tiny seeded random so every pizza looks the same on every reload */
+function seeded(str){
+  let h = 2166136261;
+  for (let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619); }
+  return function(){ h += 0x6D2B79F5; let t = h;
+    t = Math.imul(t ^ t>>>15, t|1); t ^= t + Math.imul(t ^ t>>>7, t|61);
+    return ((t ^ t>>>14)>>>0)/4294967296; };
+}
+
+/* Topping keyword -> colour, used by the artwork generator */
+const PAINT = {
+  chicken:"#C9823F", tandoori:"#CC5A2E", devilled:"#D6442B", black:"#5C3426",
+  sausage:"#B8452F", bacon:"#C4604A", pepperoni:"#B32B22", ham:"#E0948A",
+  onion:"#D8B6DF", capsicum:"#3E8E4F", chilli:"#2F7A3C", jalapeno:"#56A85C",
+  mushroom:"#CBB89A", olive:"#33332A", tomato:"#D33B2C", pineapple:"#E8C04A",
+  prawn:"#F19A7A", cuttlefish:"#EFE2D2", paneer:"#F7F0DF", coriander:"#4C8B3F",
+  potato:"#E3C98D", cheese:"#F5CE7A"
+};
+
+/* Builds an SVG pizza from the item's topping keywords.
+   This is the fallback artwork — drop in a photo and it is used instead. */
+function pizzaSVG(key, art, size){
+  const rnd = seeded(key);
+  const R = 100;
+  let out = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="100" cy="100" r="98" fill="#C9883F"/>
+    <circle cx="100" cy="100" r="98" fill="none" stroke="#A96A2C" stroke-width="2"/>
+    <circle cx="100" cy="100" r="86" fill="#B0281C"/>
+    <circle cx="100" cy="100" r="83" fill="#F0BE62"/>`;
+
+  /* soft baked blotches on the cheese */
+  for (let i=0;i<9;i++){
+    const a = rnd()*Math.PI*2, d = rnd()*68;
+    out += `<circle cx="${(100+Math.cos(a)*d).toFixed(1)}" cy="${(100+Math.sin(a)*d).toFixed(1)}" r="${(5+rnd()*8).toFixed(1)}" fill="#E0A84F" opacity=".5"/>`;
+  }
+
+  /* toppings, scattered on rings so nothing clumps in the middle */
+  const list = (art && art.length) ? art : ["cheese"];
+  list.forEach((t,ti)=>{
+    const col = PAINT[t] || "#C9823F";
+    const n = size === "sm" ? 6 : 9;
+    for (let i=0;i<n;i++){
+      const a = (i/n)*Math.PI*2 + ti*0.8 + rnd()*0.5;
+      const d = 22 + rnd()*52;
+      const x = (100+Math.cos(a)*d).toFixed(1), y = (100+Math.sin(a)*d).toFixed(1);
+      const r = (4.5 + rnd()*3.5).toFixed(1);
+      if (t === "olive"){
+        out += `<circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/><circle cx="${x}" cy="${y}" r="${(r*0.42).toFixed(1)}" fill="#F0BE62"/>`;
+      } else if (t === "capsicum" || t === "chilli" || t === "jalapeno"){
+        out += `<rect x="${x-r}" y="${y-r*0.5}" width="${r*2}" height="${r}" rx="${(r*0.5).toFixed(1)}" fill="${col}" transform="rotate(${(rnd()*180).toFixed(0)} ${x} ${y})"/>`;
+      } else if (t === "cheese"){
+        out += `<circle cx="${x}" cy="${y}" r="${(r*1.3).toFixed(1)}" fill="${col}" opacity=".85"/>`;
+      } else {
+        out += `<circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/>`;
+      }
+    }
+  });
+
+  out += `<circle cx="100" cy="100" r="${R-2}" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="4"/></svg>`;
+  return out;
+}
+
+/* Either the customer's photo or the generated artwork */
+function media(item, size){
+  if (item.img){
+    return `<img src="${esc(item.img)}" alt="${esc(item.name)} pizza" loading="lazy" decoding="async"
+             onload="this.classList.add('ready')" onerror="this.remove()">
+            ${pizzaSVG(item.name, item.art, size)}`;
+  }
+  return pizzaSVG(item.name, item.art, size);
+}
+
+/* ================================================================
+   4. BUILD THE PAGE
+   ================================================================ */
+$("#heroArt").innerHTML = pizzaSVG("hero-pizza", ["pepperoni","capsicum","mushroom","onion","olive"], "lg");
+
+const menuEl = $("#menu"), chipsEl = $("#chips");
+
+MENU.forEach(cat=>{
+  /* chip */
+  const chip = document.createElement("button");
+  chip.className = "chip"; chip.textContent = cat.name;
+  chip.dataset.target = cat.id;
+  chip.addEventListener("click", ()=>{
+    document.getElementById(cat.id).scrollIntoView({behavior: reduced.matches ? "auto" : "smooth", block:"start"});
+  });
+  chipsEl.appendChild(chip);
+
+  /* section */
+  const sec = document.createElement("section");
+  sec.className = "section" + (cat.perItemPrice ? " thin" : "");
+  sec.id = cat.id;
+  sec.setAttribute("aria-labelledby", cat.id + "-h");
+
+  let head = `<div class="banner"><h2 class="banner-name" id="${cat.id}-h">${esc(cat.name)}</h2><span class="banner-line"></span></div>`;
+
+  if (cat.sizes){
+    head += `<ul class="sizes">` + cat.sizes.map(s =>
+      `<li><span>${esc(s.label)}</span>${money(s.price)}</li>`).join("") + `</ul>`;
+  } else if (cat.blurb){
+    head += `<ul class="sizes"><li><span>Sizes</span>Regular &amp; large</li></ul>`;
+  }
+
+  const cards = cat.items.map((item,i)=>{
+    const sizes = cat.perItemPrice ? item.sizes : cat.sizes;
+    const from  = Math.min(...sizes.map(s=>s.price));
+    const tags  = (item.badges||[]).map(b =>
+      `<span class="tag ${b}">${b === "veg" ? "VEG" : "NEW"}</span>`).join("");
+
+    /* thin crust prints its two prices in full; pan pizzas show a "from" price */
+    const blurb = cat.perItemPrice
+      ? sizes.map(s=>`${s.label} ${money(s.price)}`).join("  ·  ")
+      : esc(item.desc);
+    const foot = cat.perItemPrice
+      ? ""
+      : `<span class="price">${money(from)}<small>personal onwards</small></span>`;
+
+    return `<article class="card" style="--d:${(i%6)*60}ms" data-cat="${cat.id}" data-i="${i}">
+      <div class="card-media">${media(item,"sm")}</div>
+      <div class="card-body">
+        ${tags ? `<div class="tags">${tags}</div>` : ""}
+        <h3>${esc(item.name)}</h3>
+        <p>${blurb}</p>
+        <div class="card-foot">
+          ${foot}
+          <button class="add" data-cat="${cat.id}" data-i="${i}">Add</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  sec.innerHTML = head + `<div class="grid">${cards}</div>`;
+  menuEl.appendChild(sec);
+});
+
+/* ================================================================
+   5. MOTION — reveal on scroll, and chip follows the scroll position
+   ================================================================ */
+if (!reduced.matches && "IntersectionObserver" in window){
+  const reveal = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add("in"); reveal.unobserve(e.target); } });
+  }, {rootMargin:"0px 0px -8% 0px", threshold:.08});
+  $$(".card").forEach(c=>reveal.observe(c));
+} else {
+  $$(".card").forEach(c=>c.classList.add("in"));
+}
+
+/* Centre the active chip by scrolling ONLY the chip strip.
+   scrollIntoView() would also nudge the page, which makes the whole
+   page judder while you are scrolling it yourself. */
+function centreChip(chip){
+  const wrap = chipsEl;
+  const want = chip.offsetLeft - (wrap.clientWidth - chip.offsetWidth) / 2;
+  const max  = wrap.scrollWidth - wrap.clientWidth;
+  const to   = Math.max(0, Math.min(max, want));
+  if (Math.abs(wrap.scrollLeft - to) < 2) return;      // already there
+  if (wrap.scrollTo) wrap.scrollTo({left:to, behavior: reduced.matches ? "auto" : "smooth"});
+  else wrap.scrollLeft = to;
+}
+
+let activeId = null;
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if (!e.isIntersecting || e.target.id === activeId) return;
+    activeId = e.target.id;
+    $$(".chip").forEach(c=>{
+      const on = c.dataset.target === activeId;
+      c.classList.toggle("on", on);
+      if (on) centreChip(c);
+    });
+  });
+}, {rootMargin:"-45% 0px -50% 0px"});
+$$(".section").forEach(s=>spy.observe(s));
+
+/* ripple on every red button */
+document.addEventListener("pointerdown", e=>{
+  const btn = e.target.closest(".add, .cta");
+  if (!btn || reduced.matches) return;
+  const r = btn.getBoundingClientRect();
+  const d = Math.max(r.width, r.height);
+  const dot = document.createElement("span");
+  dot.className = "ripple";
+  dot.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;
+  btn.appendChild(dot);
+  setTimeout(()=>dot.remove(), 600);
+});
+
+/* ================================================================
+   6. SHEET PLUMBING — open, close, focus trap, Escape
+   ================================================================ */
+const scrim = $("#scrim");
+let openSheet = null, lastFocus = null;
+
+function show(sheet){
+  lastFocus = document.activeElement;
+  openSheet = sheet;
+  sheet.setAttribute("aria-hidden","false");
+  scrim.classList.add("on");
+  document.body.classList.add("locked");
+  requestAnimationFrame(()=>sheet.classList.add("on"));
+  setTimeout(()=>{
+    const first = sheet.querySelector("button, input, textarea, [tabindex]");
+    if (first) first.focus({preventScroll:true});
+  }, 120);
+}
+function hide(sheet){
+  sheet.classList.remove("on");
+  sheet.setAttribute("aria-hidden","true");
+  if (openSheet === sheet) openSheet = null;
+  if (!openSheet){ scrim.classList.remove("on"); document.body.classList.remove("locked"); }
+  if (lastFocus) lastFocus.focus({preventScroll:true});
+}
+scrim.addEventListener("click", ()=>{ if (openSheet) hide(openSheet); });
+document.addEventListener("keydown", e=>{
+  if (!openSheet) return;
+  if (e.key === "Escape"){ hide(openSheet); return; }
+  if (e.key !== "Tab") return;
+  const f = $$('button, input, textarea, [href], [tabindex]:not([tabindex="-1"])', openSheet)
+            .filter(el=>!el.disabled && el.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length-1];
+  if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
+
+let toastTimer;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("on"), 1900);
+}
+
+/* ================================================================
+   7. ITEM SHEET — size, crust, extra cheese, quantity
+   ================================================================ */
+const sheetI = $("#itemSheet");
+let draft = null;   // { cat, item, size, crust, cheese, qty, picks[] }
+
+function openItem(catId, index, originBtn){
+  const cat  = MENU.find(c=>c.id === catId);
+  const item = cat.items[index];
+  const sizes = cat.perItemPrice ? item.sizes : cat.sizes;
+
+  draft = { cat, item, sizes, size:sizes[0].key, crust:"pan", cheese:false, qty:1, picks:[], originBtn };
+
+  $("#isTitle").textContent = item.name;
+  $("#isDesc").textContent  = item.desc || "";
+  $("#isArt").innerHTML     = media(item,"lg");
+
+  renderItemBody();
+  show(sheetI);
+}
+
+function renderItemBody(){
+  const {cat, item, sizes} = draft;
+  let html = "";
+
+  /* size */
+  html += `<div class="field"><h3>Size</h3><div class="opts row" data-group="size">` +
+    sizes.map(s=>{
+      const on = s.key === draft.size ? " on" : "";
+      return `<button class="opt${on}" data-size="${s.key}" aria-pressed="${s.key===draft.size}">
+        <span>${esc(s.label)}</span><span class="sub">${money(s.price)}</span></button>`;
+    }).join("") + `</div></div>`;
+
+  /* crust — pan categories only */
+  if (cat.crusts){
+    html += `<div class="field"><h3>Crust</h3><div class="opts" data-group="crust">` +
+      CRUSTS.map(c=>{
+        const blocked = c.largeOnly && draft.size !== "large";
+        const on = c.key === draft.crust && !blocked ? " on" : "";
+        const price = c.extra ? `+ ${money(c.extra)}` : "Included";
+        return `<button class="opt${on}" data-crust="${c.key}" ${blocked ? "disabled" : ""} aria-pressed="${c.key===draft.crust}">
+          <span>${esc(c.label)}<span class="note">${esc(c.note)}${blocked ? " — choose large first" : ""}</span></span>
+          <span class="sub">${price}</span></button>`;
+      }).join("") + `</div></div>`;
+  }
+
+  /* pick-your-own toppings (Meat Lovers) */
+  if (item.pick){
+    const left = item.pick.count - draft.picks.length;
+    html += `<div class="field"><h3>${esc(item.pick.label)} <em>— ${left} left</em></h3><div class="opts" data-group="pick">` +
+      item.pick.options.map(o=>{
+        const on = draft.picks.includes(o);
+        const full = !on && draft.picks.length >= item.pick.count;
+        return `<button class="opt${on ? " on":""}" data-pick="${esc(o)}" ${full ? "disabled":""} aria-pressed="${on}">
+          <span>${esc(o)}</span><span class="sub">${on ? "Added" : ""}</span></button>`;
+      }).join("") + `</div></div>`;
+  }
+
+  /* extra cheese — pan pizzas only, priced by size */
+  if (cat.crusts){
+    const cost = CHEESE[draft.size] || CHEESE.large;
+    html += `<div class="field"><h3>Extra cheese</h3><div class="opts" data-group="cheese">
+      <button class="opt${draft.cheese ? " on":""}" data-cheese="1" aria-pressed="${draft.cheese}">
+        <span>Add extra cheese<span class="note">${draft.size === "personal" ? "For 1 person" : draft.size === "medium" ? "For 2 people" : "For 4 people"}</span></span>
+        <span class="sub">+ ${money(cost)}</span></button></div></div>`;
+  }
+
+  /* quantity */
+  html += `<div class="field"><h3>Quantity</h3><div class="stepper">
+    <button data-qty="-1" aria-label="One less">&minus;</button>
+    <output id="qtyOut">${draft.qty}</output>
+    <button data-qty="1" aria-label="One more">+</button>
+  </div></div>`;
+
+  $("#isBody").innerHTML = html;
+  updateItemTotal();
+}
+
+/* The one place prices are worked out, for the sheet and the cart alike */
+function lineTotal(d){
+  const size = d.sizes.find(s=>s.key === d.size);
+  let unit = size.price;
+  if (d.cat.crusts){
+    const crust = CRUSTS.find(c=>c.key === d.crust);
+    if (crust && (!crust.largeOnly || d.size === "large")) unit += crust.extra;
+    if (d.cheese) unit += (CHEESE[d.size] || CHEESE.large);
+  }
+  return unit * d.qty;
+}
+
+function updateItemTotal(){
+  const ok = !draft.item.pick || draft.picks.length === draft.item.pick.count;
+  $("#isTotal").textContent = money(lineTotal(draft));
+  $("#isAdd").disabled = !ok;
+  $("#isAdd").querySelector("span").textContent = ok ? "Add to cart" : `Pick ${draft.item.pick.count - draft.picks.length} more`;
+}
+
+$("#isBody").addEventListener("click", e=>{
+  const b = e.target.closest("button");
+  if (!b || !draft) return;
+
+  if (b.dataset.size){
+    draft.size = b.dataset.size;
+    const crust = CRUSTS.find(c=>c.key === draft.crust);
+    if (crust && crust.largeOnly && draft.size !== "large") draft.crust = "pan";
+    renderItemBody();
+  } else if (b.dataset.crust){
+    draft.crust = b.dataset.crust;
+    renderItemBody();
+  } else if (b.dataset.pick){
+    const v = b.dataset.pick;
+    const i = draft.picks.indexOf(v);
+    if (i > -1) draft.picks.splice(i,1);
+    else if (draft.picks.length < draft.item.pick.count) draft.picks.push(v);
+    renderItemBody();
+  } else if (b.dataset.cheese){
+    draft.cheese = !draft.cheese;
+    renderItemBody();
+  } else if (b.dataset.qty){
+    draft.qty = Math.min(20, Math.max(1, draft.qty + Number(b.dataset.qty)));
+    $("#qtyOut").textContent = draft.qty;
+    updateItemTotal();
+  }
+});
+
+$("#isClose").addEventListener("click", ()=>hide(sheetI));
+
+menuEl.addEventListener("click", e=>{
+  const btn = e.target.closest(".add");
+  const card = e.target.closest(".card");
+  if (btn) { openItem(btn.dataset.cat, Number(btn.dataset.i), btn); return; }
+  if (card) openItem(card.dataset.cat, Number(card.dataset.i), card.querySelector(".add"));
+});
+
+/* ================================================================
+   8. CART — held in memory only, so a refresh starts fresh
+   ================================================================ */
+let cart = [];
+
+function cartKey(d){
+  return [d.cat.id, d.item.name, d.size, d.crust, d.cheese ? "ec" : "", d.picks.slice().sort().join("|")].join("::");
+}
+
+function addToCart(){
+  const key = cartKey(draft);
+  const found = cart.find(l=>l.key === key);
+  if (found) found.qty = Math.min(20, found.qty + draft.qty);
+  else cart.push({
+    key, catId:draft.cat.id, name:draft.item.name, sizes:draft.sizes,
+    size:draft.size, crust:draft.crust, cheese:draft.cheese,
+    picks:draft.picks.slice(), qty:draft.qty
+  });
+
+  flyToCart(draft.originBtn);
+  hide(sheetI);
+  paintCart();
+  toast(`${draft.item.name} added`);
+}
+$("#isAdd").addEventListener("click", addToCart);
+
+function lineOf(l){
+  const cat = MENU.find(c=>c.id === l.catId);
+  return lineTotal({cat, sizes:l.sizes, size:l.size, crust:l.crust, cheese:l.cheese, qty:l.qty});
+}
+const cartTotal = () => cart.reduce((n,l)=>n + lineOf(l), 0);
+const cartCount = () => cart.reduce((n,l)=>n + l.qty, 0);
+
+function paintCart(){
+  const n = cartCount(), total = cartTotal();
+  const badge = $("#cartCount");
+  badge.textContent = n;
+  badge.classList.toggle("on", n > 0);
+  if (n > 0 && !reduced.matches){
+    badge.classList.remove("pop"); void badge.offsetWidth; badge.classList.add("pop");
+  }
+  $("#bar").classList.toggle("on", n > 0);
+  $("#barLeft").textContent = `View cart · ${n} ${n === 1 ? "item" : "items"}`;
+  $("#barRight").innerHTML = money(total);
+  if (sheetI.getAttribute("aria-hidden") === "false") return;
+  if ($("#cartSheet").getAttribute("aria-hidden") === "false") renderCart();
+}
+
+/* fly-to-cart: a small puck arcs from the button to the cart icon */
+function flyToCart(from){
+  if (reduced.matches || !from || !from.getBoundingClientRect) return;
+  const a = from.getBoundingClientRect();
+  const b = $("#cartBtn").getBoundingClientRect();
+  const puck = document.createElement("div");
+  puck.className = "fly";
+  puck.style.left = (a.left + a.width/2 - 17) + "px";
+  puck.style.top  = (a.top  + a.height/2 - 17) + "px";
+  document.body.appendChild(puck);
+  const dx = (b.left + b.width/2) - (a.left + a.width/2);
+  const dy = (b.top  + b.height/2) - (a.top  + a.height/2);
+  puck.animate(
+    [
+      {transform:"translate(0,0) scale(1)", opacity:1},
+      {transform:`translate(${dx*0.55}px, ${dy*0.55 - 70}px) scale(.78)`, opacity:.95, offset:.6},
+      {transform:`translate(${dx}px, ${dy}px) scale(.18)`, opacity:0}
+    ],
+    {duration:620, easing:"cubic-bezier(.4,.05,.6,1)"}
+  ).onfinish = ()=>puck.remove();
+}
+
+/* ================================================================
+   9. CART SHEET — three steps: cart, checkout, confirmation
+   ================================================================ */
+const sheetC = $("#cartSheet");
+let step = "cart", order = null;
+
+function describe(l){
+  const cat  = MENU.find(c=>c.id === l.catId);
+  const size = l.sizes.find(s=>s.key === l.size);
+  const bits = [size.label];
+  if (cat.crusts){
+    bits.push(CRUSTS.find(c=>c.key === l.crust).label);
+    if (l.cheese) bits.push("extra cheese");
+  } else {
+    bits.push("thin crust");
+  }
+  if (l.picks.length) bits.push(l.picks.join(", "));
+  return bits.join(" · ");
+}
+
+function renderCart(){
+  const body = $("#csBody"), foot = $("#csFoot");
+
+  if (step === "done"){
+    $("#csTitle").textContent = "Order placed";
+    $("#csSub").textContent = "";
+    body.innerHTML = `<div class="done">
+      <svg class="tick" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="44"/>
+        <path d="M30 52 L44 66 L71 37"/>
+      </svg>
+      <h2>Thanks, ${esc(order.name.split(" ")[0])}</h2>
+      <p>We have your order for ${esc(order.address.split("\n")[0].slice(0,46))}. The shop will ring ${esc(order.phone)} to confirm.</p>
+      <span class="order-no">${esc(order.ref)}</span>
+      <p>${order.pay === "cash" ? "Pay cash when it arrives." : "Card payment is taken at the door."} Total ${money(order.total)}.</p>
+    </div>`;
+    foot.innerHTML = `<button class="cta" id="csDone">Back to the menu</button>`;
+    $("#csDone").addEventListener("click", ()=>{ hide(sheetC); cart = []; step = "cart"; paintCart(); });
+    return;
+  }
+
+  if (step === "checkout"){
+    $("#csTitle").textContent = "Delivery details";
+    $("#csSub").textContent = `${cartCount()} ${cartCount()===1?"item":"items"} · ${money(cartTotal()).replace("\u00A0"," ")}`;
+    body.innerHTML = `<div class="form">
+      <label><span class="lab">Name</span>
+        <input id="fName" type="text" name="name" autocomplete="name" placeholder="Your name" required>
+        <span class="err" id="eName"></span></label>
+      <label><span class="lab">Mobile number</span>
+        <input id="fPhone" type="tel" name="tel" autocomplete="tel" inputmode="tel" placeholder="07X XXX XXXX" required>
+        <span class="err" id="ePhone"></span></label>
+      <label><span class="lab">Delivery address</span>
+        <textarea id="fAddr" name="address" autocomplete="street-address" placeholder="House number, street, town" required></textarea>
+        <span class="err" id="eAddr"></span></label>
+      <div class="field"><h3>Payment</h3><div class="opts" data-group="pay">
+        <button class="opt on" data-pay="cash" aria-pressed="true"><span>Cash on delivery</span><span class="sub">&#10003;</span></button>
+        <button class="opt" data-pay="card" aria-pressed="false"><span>Card at the door</span><span class="sub"></span></button>
+      </div></div>
+      <p class="fineprint" style="margin-top:18px">Menu prices only. Nothing is charged on this page.</p>
+    </div>`;
+    foot.innerHTML = `<button class="cta" id="csPlace"><span>Place order</span><span class="amt">${money(cartTotal())}</span></button>`;
+    $("#csPlace").addEventListener("click", placeOrder);
+    return;
+  }
+
+  /* step === "cart" */
+  $("#csTitle").textContent = "Your order";
+  $("#csSub").textContent = cart.length ? `${cartCount()} ${cartCount()===1?"item":"items"}` : "";
+
+  if (!cart.length){
+    body.innerHTML = `<div class="empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/>
+        <circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+      </svg>
+      <h3>Nothing here yet</h3>
+      <p>Add a pizza from the menu and it will show up here.</p>
+    </div>`;
+    foot.innerHTML = `<button class="cta" id="csShop">Browse the menu</button>`;
+    $("#csShop").addEventListener("click", ()=>hide(sheetC));
+    return;
+  }
+
+  body.innerHTML = cart.map((l,i)=>`<div class="line">
+    <div>
+      <h3>${esc(l.name)}</h3>
+      <p>${esc(describe(l))}</p>
+    </div>
+    <span class="money">${money(lineOf(l))}</span>
+    <div class="stepper">
+      <button data-ci="${i}" data-d="-1" aria-label="One less ${esc(l.name)}">&minus;</button>
+      <output>${l.qty}</output>
+      <button data-ci="${i}" data-d="1" aria-label="One more ${esc(l.name)}">+</button>
+      <button class="remove" data-rm="${i}">Remove</button>
+    </div>
+  </div>`).join("") +
+  `<div class="totals"><span>Total</span><span>${money(cartTotal())}</span></div>
+   <p class="fineprint">Menu prices only. Delivery is arranged when the shop calls you back.</p>`;
+
+  foot.innerHTML = `<button class="cta" id="csNext"><span>Checkout</span><span class="amt">${money(cartTotal())}</span></button>`;
+  $("#csNext").addEventListener("click", ()=>{ step = "checkout"; renderCart(); });
+}
+
+$("#csBody").addEventListener("click", e=>{
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.rm !== undefined){
+    cart.splice(Number(b.dataset.rm),1); paintCart(); renderCart();
+  } else if (b.dataset.ci !== undefined){
+    const l = cart[Number(b.dataset.ci)];
+    l.qty += Number(b.dataset.d);
+    if (l.qty < 1) cart.splice(Number(b.dataset.ci),1);
+    paintCart(); renderCart();
+  } else if (b.dataset.pay){
+    $$('[data-group="pay"] .opt').forEach(o=>{
+      const on = o === b;
+      o.classList.toggle("on", on);
+      o.setAttribute("aria-pressed", on);
+      o.querySelector(".sub").innerHTML = on ? "&#10003;" : "";
+    });
+  }
+});
+
+function placeOrder(){
+  const name  = $("#fName").value.trim();
+  const phone = $("#fPhone").value.trim();
+  const addr  = $("#fAddr").value.trim();
+  let ok = true;
+
+  const fail = (input, errEl, msg)=>{
+    input.setAttribute("aria-invalid","true"); $(errEl).textContent = msg; ok = false;
+  };
+  const pass = (input, errEl)=>{ input.removeAttribute("aria-invalid"); $(errEl).textContent = ""; };
+
+  name.length >= 2 ? pass($("#fName"),"#eName") : fail($("#fName"),"#eName","Enter the name for the order.");
+  /^[0-9+\s-]{9,15}$/.test(phone) ? pass($("#fPhone"),"#ePhone") : fail($("#fPhone"),"#ePhone","Enter a mobile number we can call.");
+  addr.length >= 8 ? pass($("#fAddr"),"#eAddr") : fail($("#fAddr"),"#eAddr","Add a street and town so the rider can find you.");
+
+  if (!ok){ $("#csBody").querySelector('[aria-invalid="true"]').focus(); return; }
+
+  order = {
+    name, phone, address:addr,
+    pay: $('[data-group="pay"] .opt.on').dataset.pay,
+    total: cartTotal(),
+    ref: "PH-" + String(Math.floor(100000 + Math.random()*900000))
+  };
+  step = "done";
+  renderCart();
+}
+
+$("#cartBtn").addEventListener("click", ()=>{ step = "cart"; renderCart(); show(sheetC); });
+$("#barBtn").addEventListener("click", ()=>{ step = "cart"; renderCart(); show(sheetC); });
+$("#csClose").addEventListener("click", ()=>{
+  hide(sheetC);
+  if (step === "done"){ cart = []; step = "cart"; paintCart(); }
+});
+
+paintCart();
+</script>
+</body>
+</html>
